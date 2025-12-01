@@ -6,7 +6,7 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:36:30 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/01 22:53:12 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/01 22:58:41 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,17 @@ size_t	ft_strlen_gnl(const char *s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strchr_gnl(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (NULL);
 }
