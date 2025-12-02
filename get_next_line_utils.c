@@ -6,7 +6,7 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:36:30 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/02 23:50:35 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/03 00:05:45 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 		return (NULL);
 	new = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
 	if (!new)
-		return (NULL);
-	i = -1;
-	while (s1[++i])
-		new[i] = s1[i];
+		return (free(s1), NULL);
+	i = 0;
+	while (s1[i])
+		new[i] = s1[i], i++;
 	j = 0;
 	while (s2[j])
-		new[i++] = s2[j++];
+		new[i] = s2[j], i++, j++;
 	new[i] = '\0';
 	free(s1);
 	return (new);
