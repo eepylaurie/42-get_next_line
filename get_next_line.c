@@ -6,7 +6,7 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:41:35 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/02 23:24:58 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/02 23:29:26 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ static char	*ft_update_stash(char *stash)
 	int		i;
 	int		j;
 
+	if (!stash)
+		return (NULL);
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
