@@ -6,7 +6,7 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:41:35 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/02 23:35:32 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/02 23:42:40 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,11 @@ char	*get_next_line(int fd)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes < 0)
-			return (free(buffer), NULL);
+			return (free(buffer), free(stash), stash = NULL, NULL);
 		buffer[bytes] = '\0';
 		stash = ft_strjoin_gnl(stash, buffer);
+		if (!stash)
+			return (free(buffer), NULL);
 	}
 	free(buffer);
 	line = ft_extract_line(stash);
