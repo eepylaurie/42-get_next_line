@@ -6,7 +6,7 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:36:30 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/02 18:53:28 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/02 18:59:36 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ char	*ft_strchr_gnl(const char *s, int c)
 char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	char	*new;
-	size_t	len1;
-	size_t	len2;
 	size_t	i;
 	size_t	j;
 
@@ -54,24 +52,15 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	}
 	if (!s2)
 		return (NULL);
-	len1 = ft_strlen_gnl(s1);
-	len2 = ft_strlen_gnl(s2);
-	new = malloc(len1 + len2 + 1);
+	new = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
 	if (!new)
 		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
+	i = -1;
+	while (s1[++i])
 		new[i] = s1[i];
-		i++;
-	}
 	j = 0;
 	while (s2[j])
-	{
-		new[i] = s2[j];
-		i++;
-		j++;
-	}
+		new[i++] = s2[j++];
 	new[i] = '\0';
 	free(s1);
 	return (new);
