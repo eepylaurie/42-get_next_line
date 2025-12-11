@@ -6,98 +6,98 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:41:35 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/11 17:39:49 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/11 18:46:00 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*read_and_stash(int fd, char *stash)
+static char	*fill_remainder(int fd, char *remainder)
 {
-	char	*buf;
-	int		bytes;
+	char	*buffer;
+	int		read_bytes;
 
-	buf = malloc(BUFFER_SIZE + 1);
-	if (!buf)
-		return (free(stash), NULL);
-	bytes = 1;
-	while (!ft_strchr_gnl(stash, '\n') && bytes > 0)
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (free(remainder), NULL);
+	read_bytes = 1;
+	while (!gnl_strchr(remainder, '\n') && read_bytes > 0)
 	{
-		bytes = read(fd, buf, BUFFER_SIZE);
-		if (bytes < 0)
-			return (free(buf), free(stash), NULL);
-		buf[bytes] = '\0';
-		stash = ft_strjoin_gnl(stash, buf);
-		if (!stash)
-			return (free(buf), NULL);
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (read_bytes < 0)
+			return (free(buffer), free(remainder), NULL);
+		buffer[read_bytes] = '\0';
+		remainder = gnl_strjoin(remainder, buffer);
+		if (!remainder)
+			return (free(buffer), NULL);
 	}
-	free(buf);
-	return (stash);
+	free(buffer);
+	return (remainder);
 }
 
-static char	*extract_line(char *stash)
+static char	*extract_line(char *remainder)
 {
 	char	*line;
 	size_t	i;
 
-	if (!stash || !stash[0])
+	if (!remainder || !remainder[0])
 		return (NULL);
 	i = 0;
-	while (stash[i] && stash[i] != '\n')
+	while (remainder[i] && remainder[i] != '\n')
 		i++;
-	line = malloc(i + (stash[i] == '\n') + 1);
+	line = malloc(i + (remainder[i] == '\n') + 1);
 	if (!line)
 		return (NULL);
 	i = 0;
-	while (stash[i] && stash[i] != '\n')
+	while (remainder[i] && remainder[i] != '\n')
 	{
-		line[i] = stash[i];
+		line[i] = remainder[i];
 		i++;
 	}
-	if (stash[i] == '\n')
+	if (remainder[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
 	return (line);
 }
 
-static char	*update_stash(char *stash)
+static char	*trim_remainder(char *remainder)
 {
-	char	*new;
+	char	*new_remainder;
 	size_t	i;
 	size_t	j;
 
-	if (!stash)
+	if (!remainder)
 		return (NULL);
 	i = 0;
-	while (stash[i] && stash[i] != '\n')
+	while (remainder[i] && remainder[i] != '\n')
 		i++;
-	if (!stash[i])
-		return (free(stash), NULL);
-	new = malloc(ft_strlen_gnl(stash) - i + 1);
-	if (!new)
-		return (free(stash), NULL);
+	if (!remainder[i])
+		return (free(remainder), NULL);
+	new_remainder = malloc(gnl_strlen(remainder) - i + 1);
+	if (!new_remainder)
+		return (free(remainder), NULL);
 	i++;
 	j = 0;
-	while (stash[i])
-		new[j++] = stash[i++];
-	new[j] = '\0';
-	free(stash);
-	return (new);
+	while (remainder[i])
+		new_remainder[j++] = remainder[i++];
+	new_remainder[j] = '\0';
+	free(remainder);
+	return (new_remainder);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*remainder;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = read_and_stash(fd, stash);
-	if (!stash)
+	remainder = fill_remainder(fd, remainder);
+	if (!remainder)
 		return (NULL);
-	line = extract_line(stash);
+	line = extract_line(remainder);
 	if (!line)
-		return (free(stash), stash = NULL, NULL);
-	stash = update_stash(stash);
+		return (free(remainder), remainder = NULL, NULL);
+	remainder = trim_remainder(remainder);
 	return (line);
 }

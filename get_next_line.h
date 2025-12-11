@@ -6,7 +6,7 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:39:28 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/05 19:01:37 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/11 18:42:32 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 
 char	*get_next_line(int fd);
 
-size_t	ft_strlen_gnl(const char *s);
-char	*ft_strchr_gnl(const char *s, int c);
-char	*ft_strjoin_gnl(char *s1, char *s2);
+size_t	gnl_strlen(const char *s);
+char	*gnl_strchr(const char *s, int c);
+char	*gnl_strjoin(char *s1, char *s2);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 22:36:30 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/05 22:00:39 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/11 18:57:29 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen_gnl(const char *s)
+size_t	gnl_strlen(const char *s)
 {
 	size_t	i;
 
@@ -24,7 +24,7 @@ size_t	ft_strlen_gnl(const char *s)
 	return (i);
 }
 
-char	*ft_strchr_gnl(const char *s, int c)
+char	*gnl_strchr(const char *s, int c)
 {
 	if (!s)
 		return (NULL);
@@ -39,44 +39,44 @@ char	*ft_strchr_gnl(const char *s, int c)
 	return (NULL);
 }
 
-static char	*ft_strjoin_core(char *s1, char *s2, char *new)
+static char	*gnl_strjoin_copy(char *remainder, char *buffer, char *joined)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	while (s1[i])
+	while (remainder[i])
 	{
-		new[i] = s1[i];
+		joined[i] = remainder[i];
 		i++;
 	}
 	j = 0;
-	while (s2[j])
+	while (buffer[j])
 	{
-		new[i + j] = s2[j];
+		joined[i + j] = buffer[j];
 		j++;
 	}
-	new[i + j] = '\0';
-	return (new);
+	joined[i + j] = '\0';
+	return (joined);
 }
 
-char	*ft_strjoin_gnl(char *s1, char *s2)
+char	*gnl_strjoin(char *remainder, char *buffer)
 {
-	char	*new;
+	char	*joined;
 
-	if (!s2)
-		return (free(s1), NULL);
-	if (!s1)
+	if (!buffer)
+		return (free(remainder), NULL);
+	if (!remainder)
 	{
-		s1 = malloc(1);
-		if (!s1)
+		remainder = malloc(1);
+		if (!remainder)
 			return (NULL);
-		s1[0] = '\0';
+		remainder[0] = '\0';
 	}
-	new = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
-	if (!new)
-		return (free(s1), NULL);
-	new = ft_strjoin_core(s1, s2, new);
-	free(s1);
-	return (new);
+	joined = malloc(gnl_strlen(remainder) + gnl_strlen(buffer) + 1);
+	if (!joined)
+		return (free(remainder), NULL);
+	joined = gnl_strjoin_copy(remainder, buffer, joined);
+	free(remainder);
+	return (joined);
 }
