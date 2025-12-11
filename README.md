@@ -2,7 +2,7 @@
 
 # get_next_line
 
-## 📌 Description
+## ℹ️ Description
 
 `get_next_line` is a function that reads and returns **one line at a time** from a file descriptor, preserving unread data between function calls using a static variable. It reads efficiently by only fetching new data when needed and stops when a newline or EOF is reached.
 
@@ -10,14 +10,6 @@ The returned line includes the `\n` character when present.
 If nothing is left to read or an error occurs, the function returns `NULL`.
 
 ## ⚙️ Instructions
-
-### Compile
-
-``` bash
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c
-```
-
-Any BUFFER_SIZE is allowed.
 
 ### Use it in a program
 
@@ -40,7 +32,17 @@ int	main(void)
 }
 ```
 
-## 🔗 Resources
+### Compile & Run
+
+``` bash
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main.c -o program
+./program
+```
+
+Any BUFFER_SIZE is allowed.
+
+
+## 🌐 Resources
 
 - `man 2 open` & `man 2 read`
 - [get_next_line | Guide](https://42-cursus.gitbook.io/guide/1-rank-01/get_next_line)
@@ -59,11 +61,16 @@ AI assistance was used **only for learning support**, including:
 
 ## 🧠 Algorithm Overview
 
-1. A static `remainder` stores the leftover text between calls.
-2. Read into a buffer until a newline is found or EOF is reached.
-3. Extract the next line from `remainder`.
-4. Remove the extracted part and keep the rest for the next call.
-5. Return the line, or `NULL` when there is nothing left to read.
+`get_next_line` returns **one complete line per call** by keeping unread data between calls.
+The algorithm works as follows:
+1. **Accumulate data into a static remainder** until a newline is found or `read()` returns 0.
+This done in `fill_remainder()`, which reads in `BUFFER_SIZE` chunks and appends them to the remainder.
+2. **Extract the line** (including the newline character, if present) using `extract_line()`.
+This returns exactly the portion that should be output for this call.
+3. **Trim the remainder** using `trim_remainder()`, removing the returned part and keeping only leftover data for the next call.
+4. **Return the extracted line**, or `NULL` if no data is left.
+
+This design avoids re-reading previously processed data, handles parial lines correctly, and ensures that each call returns exactly one line as required.
 
 ### Flowchart
 
