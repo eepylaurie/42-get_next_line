@@ -6,7 +6,7 @@
 /*   By: lmatthes <lmatthes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:41:35 by lmatthes          #+#    #+#             */
-/*   Updated: 2025/12/05 21:33:27 by lmatthes         ###   ########.fr       */
+/*   Updated: 2025/12/11 17:39:49 by lmatthes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*read_and_stash(int fd, char *stash)
 	{
 		bytes = read(fd, buf, BUFFER_SIZE);
 		if (bytes < 0)
-			return (free(buf), free(stash), stash = NULL, NULL);
+			return (free(buf), free(stash), NULL);
 		buf[bytes] = '\0';
 		stash = ft_strjoin_gnl(stash, buf);
 		if (!stash)
@@ -73,7 +73,7 @@ static char	*update_stash(char *stash)
 		i++;
 	if (!stash[i])
 		return (free(stash), NULL);
-	new = malloc(ft_strlen_gnl(stash) - i);
+	new = malloc(ft_strlen_gnl(stash) - i + 1);
 	if (!new)
 		return (free(stash), NULL);
 	i++;
@@ -101,19 +101,3 @@ char	*get_next_line(int fd)
 	stash = update_stash(stash);
 	return (line);
 }
-
-// #include <stdlib.h>
-// #include <stdio.h>
-// #include <fcntl.h>
-// int main(){
-// 	int fd;
-// 	char *line;
-// 	fd = open("test.txt", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	while(line){
-// 		printf("%s", line);
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	free(line);
-// }
