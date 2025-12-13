@@ -1,4 +1,4 @@
-*This project has been created as part of 42 curriculum by lmatthes*
+*This project has been created as part of 42 curriculum by lmatthes.*
 
 # get_next_line
 
