@@ -9,3 +9,5 @@ a.out
 
 # macOS / Linux junk
 .DS_Store
+
+main.c
