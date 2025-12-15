@@ -1,0 +1,11 @@
+# Test files
+*.txt
+test/
+tests/
+
+# Compiled output
+a.out
+*.o
+
+# macOS / Linux junk
+.DS_Store
