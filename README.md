@@ -9,6 +9,39 @@
 The returned line includes the `\n` character when present.
 If nothing is left to read or an error occurs, the function returns `NULL`.
 
+## 🧠 Algorithm Overview
+
+`get_next_line` returns **one complete line per call** by keeping unread data between calls.
+The algorithm works as follows:
+1. **Accumulate data into a static remainder** until a newline is found or `read()` returns 0.
+This done in `fill_remainder()`, which reads in `BUFFER_SIZE` chunks and appends them to the remainder.
+2. **Extract the line** (including the newline character, if present) using `extract_line()`.
+This returns exactly the portion that should be output for this call.
+3. **Trim the remainder** using `trim_remainder()`, removing the returned part and keeping only leftover data for the next call.
+4. **Return the extracted line**, or `NULL` if no data is left.
+
+This design avoids re-reading previously processed data, handles parial lines correctly, and ensures that each call returns exactly one line as required.
+
+### Flowchart
+
+``` ascii
+get_next_line
+    │
+    ├── invalid fd or BUFFER_SIZE ≤ 0 → return NULL
+    │
+    ├── remainder = gnl_fill_remainder(fd, remainder)
+    │
+    ├── remainder == NULL → return NULL
+    │
+    ├── line = gnl_extract_line(remainder)
+    │
+    ├── line == NULL → free(remainder), remainder = NULL → return NULL
+    │
+    ├── remainder = gnl_trim_remainder(remainder)
+    │
+    └── return line
+```
+
 ## ⚙️ Instructions
 
 ### Use it in a program
@@ -58,36 +91,3 @@ AI assistance was used **only for learning support**, including:
 - improving naming consistency and documentation wording
 
 **All code logic, structure, and implementation were written and understood by me.**
-
-## 🧠 Algorithm Overview
-
-`get_next_line` returns **one complete line per call** by keeping unread data between calls.
-The algorithm works as follows:
-1. **Accumulate data into a static remainder** until a newline is found or `read()` returns 0.
-This done in `fill_remainder()`, which reads in `BUFFER_SIZE` chunks and appends them to the remainder.
-2. **Extract the line** (including the newline character, if present) using `extract_line()`.
-This returns exactly the portion that should be output for this call.
-3. **Trim the remainder** using `trim_remainder()`, removing the returned part and keeping only leftover data for the next call.
-4. **Return the extracted line**, or `NULL` if no data is left.
-
-This design avoids re-reading previously processed data, handles parial lines correctly, and ensures that each call returns exactly one line as required.
-
-### Flowchart
-
-``` ascii
-get_next_line
-    │
-    ├── invalid fd or BUFFER_SIZE ≤ 0 → return NULL
-    │
-    ├── remainder = gnl_fill_remainder(fd, remainder)
-    │
-    ├── remainder == NULL → return NULL
-    │
-    ├── line = gnl_extract_line(remainder)
-    │
-    ├── line == NULL → free(remainder), remainder = NULL → return NULL
-    │
-    ├── remainder = gnl_trim_remainder(remainder)
-    │
-    └── return line
-```
